@@ -2,6 +2,9 @@
 
 This Proof of Concept demonstrates a simple application scenario implemented using AWS serverless platform including TIBCO Flogo, Flogo Rules, BusinessEvents, and AWS Golang Lambda functions, Kafka, and Redis cache.
 
+## Solution Design
+![Eligibility](poc-design.png)
+
 ## Setup development environment
 
 * [Install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-macos.html#install-bundle-macos)
