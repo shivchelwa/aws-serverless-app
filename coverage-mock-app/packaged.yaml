@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'coverage-mock-app
+
+  Sample SAM Template for coverage-mock-app
+
+  '
+Globals:
+  Function:
+    Timeout: 5
+Outputs:
+  CoverageAPI:
+    Description: API Gateway endpoint URL for Prod environment for First Function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/coverage/
+  CoverageFunction:
+    Description: First Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - CoverageFunction
+      - Arn
+  CoverageFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - CoverageFunctionRole
+      - Arn
+Resources:
+  CoverageFunction:
+    Properties:
+      CodeUri: s3://yxu-sam-app/055a118a258b8edfd2d1871991b48a86
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        CatchAll:
+          Properties:
+            Method: ANY
+            Path: /coverage
+          Type: Api
+      Handler: coverage
+      Runtime: go1.x
+      Tracing: Active
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31

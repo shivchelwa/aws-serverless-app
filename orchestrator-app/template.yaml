@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  orchestrator-app
+  
+  Sample SAM Template for orchestrator-app
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 5
+
+Resources:
+  OrchestratorFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: orchestrator/
+      Handler: orchestrator
+      Runtime: go1.x
+      Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+      Events:
+        CatchAll:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /orchestrate
+            Method: ANY
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          KAFKA_URL: ab79113bb0fae11e9ac0402574cbecab-704571518.us-west-2.elb.amazonaws.com:9094
+          WAYPOINTS_TOPIC: waypoints
+          FUNC_REGION: us-west-2
+          ORGSTATUS_FUNC: org_status_app
+          COVERAGE_URL: https://d6723ni8wa.execute-api.us-west-2.amazonaws.com/Prod/coverage/
+
+Outputs:
+  OrchestratorAPI:
+    Description: "API Gateway endpoint URL for Prod environment for First Function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/orchestrate/"
+
+  OrchestratorFunction:
+    Description: "First Lambda Function ARN"
+    Value: !GetAtt OrchestratorFunction.Arn
+
+  OrchestratorFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt OrchestratorFunctionRole.Arn

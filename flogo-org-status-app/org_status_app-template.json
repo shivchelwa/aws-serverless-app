@@ -1,0 +1,224 @@
+{
+  "name": "OrgStatusApp",
+  "type": "flogo:app",
+  "version": "0.0.1",
+  "appModel": "1.0.0",
+  "triggers": [
+    {
+      "id": "start_flow_as_a_function_in_lambda",
+      "ref": "github.com/TIBCOSoftware/flogo-contrib/trigger/lambda",
+      "name": "Start Flow as a function in Lambda",
+      "description": "Lambda Trigger",
+      "settings": {},
+      "handlers": [
+        {
+          "action": {
+            "ref": "github.com/TIBCOSoftware/flogo-contrib/action/flow",
+            "data": {
+              "flowURI": "res://flow:org_status_flow"
+            },
+            "mappings": {
+              "input": [
+                {
+                  "mapTo": "orgID",
+                  "type": "assign",
+                  "value": "$.evt.orgID"
+                }
+              ],
+              "output": [
+                {
+                  "mapTo": "data",
+                  "type": "assign",
+                  "value": "$.inforce"
+                },
+                {
+                  "mapTo": "status",
+                  "type": "assign",
+                  "value": "$.code"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "flow:org_status_flow",
+      "data": {
+        "name": "OrgStatusFlow",
+        "description": "CHC POC check org-status",
+        "metadata": {
+          "input": [
+            {
+              "name": "orgID",
+              "type": "string"
+            }
+          ],
+          "output": [
+            {
+              "name": "code",
+              "type": "integer"
+            },
+            {
+              "name": "inforce",
+              "type": "boolean"
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "id": "log_2",
+            "name": "Log Request",
+            "description": "Simple Log Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+              "input": {
+                "flowInfo": "false",
+                "addToFlow": "false"
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "expression",
+                    "value": "string.concat(\"Received orgID \", $flow.orgID)",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "lambda_7",
+            "name": "Get Org Reference",
+            "description": "Invoke AWS Lambda Function via ARN Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/lambda",
+              "input": {
+                "arn": "{{OrgdataFunction}}",
+                "region": "{{AWS_REGION}}"
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "expression",
+                    "value": "string.concat(\"{\\\"httpMethod\\\":\\\"GET\\\",\\\"queryStringParameters\\\":{\\\"key\\\":\\\"\", $flow.orgID, \"\\\"}}\")",
+                    "mapTo": "payload"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "log_8",
+            "name": "Log Org Reference",
+            "description": "Simple Log Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+              "input": {
+                "flowInfo": "false",
+                "addToFlow": "false"
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "expression",
+                    "value": "string.concat(\"Org Reference returned: \", $activity[lambda_7].result.body, \" Status: \", $activity[lambda_7].status)",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "lambda_9",
+            "name": "Check Flogo Rules",
+            "description": "Invoke AWS Lambda Function via ARN Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/lambda",
+              "input": {
+                "arn": "{{FlogoRulesFunction}}",
+                "region": "{{AWS_REGION}}"
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "expression",
+                    "value": "string.concat(\"{\\\"Headers\\\":{\\\"Content-Type\\\":\\\"text/plain\\\"},\\\"Body\\\":\\\"\", $activity[lambda_7].result.body, \"\\\"}\")",
+                    "mapTo": "payload"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "log_10",
+            "name": "Log Message",
+            "description": "Simple Log Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/log",
+              "input": {
+                "flowInfo": "false",
+                "addToFlow": "false"
+              },
+              "mappings": {
+                "input": [
+                  {
+                    "type": "expression",
+                    "value": "string.concat(\"Flogo rules returned: \", $activity[lambda_9].result.body, \" Status: \", $activity[lambda_9].status)",
+                    "mapTo": "message"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "id": "actreturn_11",
+            "name": "Return",
+            "description": "Simple Return Activity",
+            "activity": {
+              "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/actreturn",
+              "input": {
+                "mappings": [
+                  {
+                    "mapTo": "code",
+                    "type": "literal",
+                    "value": 200
+                  },
+                  {
+                    "mapTo": "inforce",
+                    "type": "assign",
+                    "value": "$activity[lambda_9].result.body"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "links": [
+          {
+            "from": "log_2",
+            "to": "lambda_7"
+          },
+          {
+            "from": "lambda_7",
+            "to": "log_8"
+          },
+          {
+            "from": "log_8",
+            "to": "lambda_9"
+          },
+          {
+            "from": "lambda_9",
+            "to": "log_10"
+          },
+          {
+            "from": "log_10",
+            "to": "actreturn_11"
+          }
+        ]
+      }
+    }
+  ]
+}
