@@ -12,7 +12,7 @@ import (
 )
 
 func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	log.Println("APIGatewayProxyRequest %+v\n", request)
+	log.Printf("APIGatewayProxyRequest %+v\n", request)
 	var result string
 	var err error
 
