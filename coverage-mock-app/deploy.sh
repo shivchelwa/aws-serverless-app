@@ -24,20 +24,18 @@ while [[ "${status}" != *COMPLETE* ]]; do
 done
 
 # configure new lambda function
-if [ -z "${input}" ]; then
-  output=$(aws cloudformation describe-stacks --stack-name ${appName} --query 'Stacks[].Outputs[].OutputValue' --output text)
-  array=( ${output} )
-  for arn in "${array[@]}"; do
-    if [[ ${arn} = arn:aws:lambda:* ]]; then
-      func=${arn##*:}
-      sed -i -e "s|^FUNCTION_ARN=.*|FUNCTION_ARN=${arn}|" ./env.sh
-    elif [[ ${arn} = arn:aws:iam:* ]]; then
-      role=${arn##*/}
-    else
-      api=${arn}
-    fi
-  done
-  echo "New lambda ${appName} properties - func: $func; role: $role; api: $api"
-  sed -i -e "s|^GATEWAY_URL=.*|GATEWAY_URL=${api}|" ./env.sh
-fi
+output=$(aws cloudformation describe-stacks --stack-name ${appName} --query 'Stacks[].Outputs[].OutputValue' --output text)
+array=( ${output} )
+for arn in "${array[@]}"; do
+  if [[ ${arn} = arn:aws:lambda:* ]]; then
+    func=${arn##*:}
+    sed -i -e "s|^FUNCTION_ARN=.*|FUNCTION_ARN=${arn}|" ./env.sh
+  elif [[ ${arn} = arn:aws:iam:* ]]; then
+    role=${arn##*/}
+  else
+    api=${arn}
+  fi
+done
+echo "New lambda ${appName} properties - func: $func; role: $role; api: $api"
+sed -i -e "s|^GATEWAY_URL=.*|GATEWAY_URL=${api}|" ./env.sh
 

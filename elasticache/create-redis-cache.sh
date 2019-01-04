@@ -15,7 +15,7 @@ vpcSubnets=$(aws ec2 describe-subnets --filters Name=vpc-id,Values=${vpcId} --qu
 array=( ${vpcSubnets} )
 cacheSubnets=${array[0]},${array[1]},${array[2]}
 
-defaultSgid=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=${vpcId},Name=group-name,Values=default --query 'SecurityGroups[].GroupId' --output text)
+defaultSgid=$(aws ec2 describe-security-groups --filters Name=vpc-id,Values=${vpcId} Name=group-name,Values=default --query 'SecurityGroups[].GroupId' --output text)
 
 aws elasticache create-cache-cluster --cache-cluster-id ${cacheId} \
   --cache-node-type ${nodeType} --engine redis --num-cache-nodes ${cacheNodes} \

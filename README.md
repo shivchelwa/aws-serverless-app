@@ -59,14 +59,23 @@ This script creates a Redis cache cluster, as well as an S3 bucket for Lambda fu
 ## Testing
 Each app folder contains a file `test.sh` that shows a sample test case for each function. The same sample test can be submitted using the [AWS Lambda Console](https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions).  Application logs can be viewed on the AWS Lambda Console, or the [CloudWatch Logs](https://us-west-2.console.aws.amazon.com/cloudwatch/home?region=us-west-2#logs:).
 
-## Note
+## Notes
 * Most Lambda functions are develped using Golang, and started by generated code using SAM, e.g.,
 ```bash
 cd path/to/project/root
 sam init -r go -n orchestrator-app
 ```
+You can then edit the template.yaml, e.g., add environment variables, and complete the source code.  The code can then be compiled and deployed to AWS using a script similar to `./orchestrator-app/deploy.sh`.
+
 * The Flogo Lambda function is developed using the [Flogo UI](http://www.flogo.io/), which can be started by
 ```bash
 docker run -it -p 3303:3303 flogo/flogo-docker:latest eula-accept
 ```
-The exported app JSON file can be compiled and deployed using a script similar to `./flogo-org-status-app/deploy.sh`.
+When a Flogo flow is complete, you can export the app and download JSON file, which can then be compiled and deployed to AWS using a script similar to `./flogo-org-status-app/deploy.sh`.
+
+* The Redis cluster can be initialized by using the Lamda function implemented in `./org-reference-app/orgdata/redis_cache.go`, which provides a simple init API for creating a specified number of key-value pairs.  Folllowing steps would insert 20 records into the Redis cache for org-status:
+```bash
+cd ./org-reference-app
+./deploy.sh
+./test P-000001
+```

@@ -54,4 +54,5 @@ aws lambda create-function --function-name org_status_app --runtime go1.x --role
 # write out lambda function ARN for testing
 arn=$(aws lambda get-function --function-name org_status_app --query 'Configuration.FunctionArn' --output text)
 echo "deployed lambda ${arn}"
+cd ${SDIR}
 sed -i -e "s|^FUNCTION_ARN=.*|FUNCTION_ARN=${arn}|" ./env.sh
