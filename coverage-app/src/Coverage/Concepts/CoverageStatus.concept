@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<element:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:element="http:///com/tibco/cep/designtime/core/model/element" namespace="/Concepts/" folder="/Concepts/" name="CoverageStatus" description="" GUID="A87B2F39-8927-702E-3BA9-9DE9D710DDB9" ownerProjectName="Coverage" superConceptPath="" autoStartStateMachine="true">
+  <extendedProperties/>
+  <properties name="reference" ownerProjectName="Coverage" ownerPath="/Concepts/CoverageStatus"/>
+  <properties name="effectiveDate" ownerProjectName="Coverage" ownerPath="/Concepts/CoverageStatus"/>
+  <properties name="expireDate" ownerProjectName="Coverage" ownerPath="/Concepts/CoverageStatus"/>
+  <properties name="inforce" ownerProjectName="Coverage" type="boolean" ownerPath="/Concepts/CoverageStatus"/>
+  <properties name="reqUuid" ownerProjectName="Coverage" ownerPath="/Concepts/CoverageStatus"/>
+</element:Concept>

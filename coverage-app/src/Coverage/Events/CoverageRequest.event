@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" namespace="/Events/" folder="/Events/" name="CoverageRequest" description="" GUID="7F714806-AF23-577A-D9D7-575572608580" ownerProjectName="Coverage" superEventPath="" ttlUnits="Seconds" channelURI="/Channels/Coverage" destinationName="coverage">
+  <properties name="uuid" ownerProjectName="Coverage" ownerPath="/Events/CoverageRequest"/>
+  <namespaceEntries prefix="xsd" namespace="http://www.w3.org/2001/XMLSchema"/>
+  <expiryAction name="CoverageRequest_expiryAction" ownerProjectName="Coverage" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="coveragerequest" type="/Events/CoverageRequest"/>
+    </symbols>
+  </expiryAction>
+</event:SimpleEvent>

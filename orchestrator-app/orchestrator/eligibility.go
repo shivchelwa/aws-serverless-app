@@ -22,12 +22,14 @@ type EligibilityResponse struct {
 	ResourceType string        `json:"resourceType"`
 	ID           string        `json:"ID"`
 	Status       string        `json:"status,omitempty"`
+	Patient      ReferenceData `json:"patient,omitempty"`
 	Created      string        `json:"created,omitempty"`
+	Organization ReferenceData `json:"organization,omitempty"`
+	Insurer      ReferenceData `json:"insurer,omitempty"`
+	Coverage     ReferenceData `json:"coverage,omitempty"`
 	Request      ReferenceData `json:"request,omitempty"`
 	Disposition  string        `json:"disposition,omitempty"`
-	Coverage     ReferenceData `json:"coverage,omitempty"`
-	Insurer      ReferenceData `json:"insurer,omitempty"`
-	Inforce      bool          `json:"inforce,omitempty"`
+	Inforce      bool          `json:"inforce"`
 	SysError     []SystemError `json:"error,omitempty"`
 }
 

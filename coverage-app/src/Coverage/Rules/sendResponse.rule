@@ -1,0 +1,28 @@
+/**
+ * @description send response with coverage status
+ * @author Playing-Branes.local
+ */
+rule Rules.sendResponse {
+	attribute {
+		priority = 10;
+		forwardChain = true;
+	}
+	declare {
+		Events.CoverageRequest evt;
+		Concepts.CoverageStatus cov;
+	}
+	when {
+		evt.uuid == cov.reqUuid;
+	}
+	then {
+		Object logger = Log.getLogger("sendResponse");
+		String req = String.trim(evt@payload);
+		String insert = ", \"inforce\": " + cov.inforce + "}";
+		String resp = String.substring(req, 0, String.length(req)-1) + insert;
+		Log.log(logger, "info", "Send response: %s", resp);
+		Event.replyEvent(evt, Events.CoverageRequest.CoverageRequest(
+			null /*extId String */,
+			resp /*payload String */,
+			null /*uuid String */) );
+	}
+}

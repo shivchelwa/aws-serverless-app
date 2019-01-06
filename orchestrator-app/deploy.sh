@@ -1,4 +1,7 @@
 #!/bin/bash
+# use 'deploy.sh mock' if test against mock coverage app
+
+option=${1:-""}
 
 SDIR=$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT=$(dirname "${SDIR}")
@@ -15,7 +18,11 @@ orgstatusf=${FUNCTION_ARN##*:}
 region=$(aws configure get region)
 source ${ROOT}/eks/setup/config/env.sh
 kafkaurl=${EXTERNAL_BROKER_HOST}:${EXTERNAL_BROKER_PORT}
-source ${ROOT}/coverage-mock-app/env.sh
+if [ "${option}" == "mock" ]; then
+  source ${ROOT}/coverage-mock-app/env.sh
+else
+  source ${ROOT}/coverage-app/env.sh
+fi
 coverageurl=${GATEWAY_URL}
 echo "set env AWS region ${region}, org-status lambda ${orgstatusf}, Kafka URL ${kafkaurl}, Coverage URL ${coverageurl}"
 sed -i -e "s|FUNC_REGION:.*|FUNC_REGION: ${region}|" ./template.yaml

@@ -4,7 +4,7 @@ SDIR=$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 CONFIGDIR=$(dirname "${SDIR}")/elasticache
 source ${CONFIGDIR}/env.sh
 
-appName=org-reference-app
+appName=coverage-reference-app
 
 input=$(aws cloudformation describe-stacks --stack-name ${appName} --query 'Stacks[].Outputs[].OutputValue' --output text)
 echo "check original stack ${appName} values: ${input}"

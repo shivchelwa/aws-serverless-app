@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<repository xmlns="http://www.tibco.com/xmlns/repo/types/2002">
+    <globalVariables>
+        <globalVariable>
+            <name>HTTP_PORT</name>
+            <value>8890</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1546704306515</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>CACHE_URL</name>
+            <value>https://es0r4xjoeb.execute-api.us-west-2.amazonaws.com/Prod/coveragedata/</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1546728085382</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>KAFKA_URL</name>
+            <value>ab4f847f5112c11e98b64028047d0b43-975457141.us-west-2.elb.amazonaws.com:9094</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1546733227655</modTime>
+        </globalVariable>
+    </globalVariables>
+</repository>

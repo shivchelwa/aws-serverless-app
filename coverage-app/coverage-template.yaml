@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coverage
+spec:
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+       app: be
+       name: coverage
+  template:
+    metadata:
+      labels:
+        app: be
+        name: coverage
+    spec:
+      containers:
+      - name: coverage
+        image: {{IMAGE}}
+        env:
+        - name: PU
+          value: default
+        - name: CACHE_URL
+          value: {{CACHE_URL}}
+        - name: KAFKA_URL
+          value: {{KAFKA_URL}}
+        ports:
+        - containerPort: 8890
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coverage
+spec:
+  selector:
+    app: be
+    name: coverage
+  ports:
+  - port: 8890
+  type: LoadBalancer

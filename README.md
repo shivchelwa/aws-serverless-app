@@ -51,16 +51,30 @@ This script creates an EKS cluster according to the configuration defined by `./
 ```
 This script creates a Redis cache cluster, as well as an S3 bucket for Lambda function deployment, and an AWS role for executing Lambda functions.  The connection info are exported in the file `./elasticache/env.sh`.
 
+* Deploy Lambda function for Coverage cache
+
+- `./coverage-reference-app/deploy.sh` - This is a lambda function for GET, PUT, or initialize the Redis cache for coverage. It is used by the coverage service, and so it must be deployed first.
+
+* Deploy TIBCO BE application to EKS
+
+- `./coverage-app/deploy.sh` - This is a container for a coverage service implemented in TIBCO BusinessEvents.  The image is already built and uploaded to AWS ECR, and so the script simply pulls the image from ECR and start the POD and LoadBalancer in the EKS cluster created in the previous step. If you have installed TIBCO BusinessEvents, you may use the scripts in this folder to build the docker image youself.
+
 * Deploy Lambda functions
 
 - `./org-reference-app/deploy.sh` - This is a lambda function for GET, PUT, or initialize the Redis cache.
 - `./flogo-rules-app/deploy.sh` - This is a lambda function for execution of Flogo rules.
 - `./flogo-org-status-app/deploy.sh` - This is a lambda function implemented using Flogo UI.
 - `./coverage-mock-app/deploy.sh` - This is a lambda function to mock a BE REST service, and will be replaced by a TIBCO BusinessEvents container.
-- `./orchestrator-app/deploy.sh` - This is a lamda function for orchestration of all other functions/containers.
+- `./orchestrator-app/deploy.sh` - This is a lamda function for orchestration of all other functions/containers.  If you do not want to start the TIBCO BE container for Coverage, you can use `deploy.sh mock` to start the orchestrator with the `coverage-mock-app`.
 
 ## Testing
 Each app folder contains a file `test.sh` that shows a sample test case for each function. The same sample test can be submitted using the [AWS Lambda Console](https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions).  Application logs can be viewed on the AWS Lambda Console, or the [CloudWatch Logs](https://us-west-2.console.aws.amazon.com/cloudwatch/home?region=us-west-2#logs:).
+
+To view Coverage container logs, you can find the POD name and then tail its logs using the following command.
+```bash
+source ./eks/aws/env.sh
+kubectl logs -f $(kubectl get pod | grep coverage | awk '{print $1}')
+```
 
 ## Notes
 * Most Lambda functions are develped using Golang, and started by generated code using SAM, e.g.,

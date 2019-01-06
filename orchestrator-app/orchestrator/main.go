@@ -51,12 +51,13 @@ func successResponse(req *EligibilityRequest, inforce bool) string {
 		ID:           uuid.New().String(),
 		Status:       "active",
 		Created:      time.Now().Format("2006-01-02"),
+		Organization: req.Organization,
+		Insurer:      req.Insurer,
+		Coverage:     req.Coverage,
 		Request: ReferenceData{
 			Reference: req.ID,
 		},
-		Coverage: req.Coverage,
-		Insurer:  req.Insurer,
-		Inforce:  inforce,
+		Inforce: inforce,
 	}
 	if inforce {
 		resp.Disposition = "Policy is currently in-force"

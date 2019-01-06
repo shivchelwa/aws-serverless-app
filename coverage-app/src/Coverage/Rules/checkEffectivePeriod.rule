@@ -1,0 +1,34 @@
+/**
+ * @description check if coverage effective period covers today
+ * @author Playing-Branes.local
+ */
+rule Rules.checkEffectivePeriod {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Events.CoverageRequest evt;
+		Concepts.CoverageStatus cov;
+	}
+	when {
+		evt.uuid == cov.reqUuid;
+		cov.effectiveDate != "";
+	}
+	then {
+		Object logger = Log.getLogger("checkEffectivePeriod");
+		DateTime today = Date.today();
+		String dstr = DateTime.format(today, "yyyy-MM-dd");
+		if (cov.effectiveDate > dstr) {
+			cov.inforce = false;
+			Log.log(logger, "info", "Coverage is not effective. Effective date is %s", cov.effectiveDate);
+			return;
+		}
+		if (cov.expireDate != "" && cov.expireDate < dstr) {
+			cov.inforce = false;
+			Log.log(logger, "info", "Coverage expired on date %s", cov.expireDate);
+			return;
+		}
+		Log.log(logger, "info", "Coverage is effective in period [%s, %s]", cov.effectiveDate, cov.expireDate);
+	}
+}

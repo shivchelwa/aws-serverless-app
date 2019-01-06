@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coverage
+spec:
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+       app: be
+       name: coverage
+  template:
+    metadata:
+      labels:
+        app: be
+        name: coverage
+    spec:
+      containers:
+      - name: coverage
+        image: 742759186184.dkr.ecr.us-west-2.amazonaws.com/coverage:1.0
+        env:
+        - name: PU
+          value: default
+        - name: CACHE_URL
+          value: https://es0r4xjoeb.execute-api.us-west-2.amazonaws.com/Prod/coveragedata/
+        - name: KAFKA_URL
+          value: ab4f847f5112c11e98b64028047d0b43-975457141.us-west-2.elb.amazonaws.com:9094
+        ports:
+        - containerPort: 8890
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: coverage
+spec:
+  selector:
+    app: be
+    name: coverage
+  ports:
+  - port: 8890
+  type: LoadBalancer
