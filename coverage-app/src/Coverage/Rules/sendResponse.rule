@@ -19,6 +19,7 @@ rule Rules.sendResponse {
 		String req = String.trim(evt@payload);
 		String insert = ", \"inforce\": " + cov.inforce + "}";
 		String resp = String.substring(req, 0, String.length(req)-1) + insert;
+		resp = String.replaceFirst(resp, "EligibilityRequest", "EligibilityResponse");
 		Log.log(logger, "info", "Send response: %s", resp);
 		Event.replyEvent(evt, Events.CoverageRequest.CoverageRequest(
 			null /*extId String */,
