@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <cluster xmlns="http://tibco.com/businessevents/configuration/5.5">
     <revision>
-        <version>3</version>
+        <version>4</version>
         <author>yxu@tibco.com</author>
-        <date>2019/01/05 09:52:28</date>
+        <date>2019/01/06 19:35:39</date>
         <comment/>
     </revision>
     <name>coverage</name>
@@ -89,7 +89,7 @@
             <load>
                 <max-active/>
             </load>
-            <concurrent-rtc>false</concurrent-rtc>
+            <concurrent-rtc>true</concurrent-rtc>
             <check-for-duplicates>false</check-for-duplicates>
             <businessworks>
                 <uri/>
@@ -107,7 +107,7 @@
                 </agent>
             </agents>
             <logs>logConfig</logs>
-            <hot-deploy>false</hot-deploy>
+            <hot-deploy>true</hot-deploy>
             <cache-storage-enabled>false</cache-storage-enabled>
             <db-concepts>false</db-concepts>
             <property-group/>
