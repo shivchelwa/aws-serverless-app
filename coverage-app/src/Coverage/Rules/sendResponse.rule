@@ -4,7 +4,7 @@
  */
 rule Rules.sendResponse {
 	attribute {
-		priority = 10;
+		priority = 9;
 		forwardChain = true;
 	}
 	declare {
@@ -24,5 +24,6 @@ rule Rules.sendResponse {
 			null /*extId String */,
 			resp /*payload String */,
 			null /*uuid String */) );
+		Log.log(logger, "info", "Session elapsed time %d ms", (System.currentTimeMillis() - cov.sessionStart) );
 	}
 }

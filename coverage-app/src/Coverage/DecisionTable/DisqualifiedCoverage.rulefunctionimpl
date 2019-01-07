@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Table:Table xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Table="http:///com/tibco/cep/decision/table/model/DecisionTable.ecore" name="DisqualifiedCoverage" folder="/DecisionTable/" implements="/DecisionTable/disqualify" since="BE 4.0">
+  <decisionTable>
+    <rule id="1">
+      <cond id="1_2" colId="2" expr="&quot;deceased&quot;"/>
+      <cond id="1_1" colId="1" expr="&quot;C-000005&quot;"/>
+      <act id="1_3" colId="3" expr="false"/>
+    </rule>
+    <columns>
+      <column id="2" name="cov.patient" propertyPath="/Concepts/CoverageStatus/patient" columnType="CONDITION"/>
+      <column id="1" name="cov.reference" propertyPath="/Concepts/CoverageStatus/reference" columnType="CONDITION"/>
+      <column id="3" name="cov.inforce" propertyPath="/Concepts/CoverageStatus/inforce" propertyType="4" columnType="ACTION"/>
+    </columns>
+  </decisionTable>
+  <exceptionTable/>
+  <argument direction="BOTH">
+    <property path="/Concepts/CoverageStatus" alias="cov" resourceType="CONCEPT"/>
+  </argument>
+</Table:Table>

@@ -1,0 +1,24 @@
+/**
+ * @description check decision table if coverage is disqualified
+ * @author Playing-Branes.local
+ */
+rule Rules.checkDisqualified {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Events.CoverageRequest evt;
+		Concepts.CoverageStatus cov;
+	}
+	when {
+		evt.uuid == cov.reqUuid;
+		cov.patient != "";
+	}
+	then {
+		Object logger = Log.getLogger("checkDisqualified");
+		Log.log(logger, "info", "Check decision table for coverage %s patient %s inforce %s", cov.reference, cov.patient, cov.inforce);
+		DecisionTable.disqualify(cov);
+		Log.log(logger, "info", "Decision table result for patient: %s inforce: %s", cov.patient, cov.inforce);
+	}
+}

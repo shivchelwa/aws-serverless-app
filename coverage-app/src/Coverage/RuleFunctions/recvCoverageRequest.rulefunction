@@ -18,7 +18,9 @@ void rulefunction RuleFunctions.recvCoverageRequest {
 		Object root = JSON.parseJSON( req );
 		Object coverage = JSON.findNode( root, "coverage" );
 		String covKey = JSON.getTextValue( JSON.findValueNode( coverage, "reference" ) );
-		Log.log(logger, "info", "Construct coverage status for key %s", covKey);
+		Object patient = JSON.findNode( root, "patient" );
+		String pref = JSON.getTextValue( JSON.findValueNode( patient, "reference" ) );
+		Log.log(logger, "info", "Construct coverage status for key %s and patient %s", covKey, pref);
 		
 		// create CoverageStatus concept to trigger rules
 		Concepts.CoverageStatus.CoverageStatus(
@@ -27,6 +29,8 @@ void rulefunction RuleFunctions.recvCoverageRequest {
 			"" /*effectiveDate String */,
 			"" /*expireDate String */,
 			true /*inforce boolean */,
-			evt.uuid /*reqUuid String */);
+			evt.uuid /*reqUuid String */,
+			pref /*patient String */,
+			System.currentTimeMillis() );
 	}
 }

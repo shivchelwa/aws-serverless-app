@@ -21,9 +21,11 @@ rule Rules.checkCache {
 		String req = cacheUrl + "?key=" + cov.reference;
 		Log.log(logger, "info", "Send cache request: %s", req);
 		try {
+			long startTime = System.currentTimeMillis();
 			Events.CacheRequest resp = HTTP.sendRequest(req, 
 				Events.CacheRequest.CacheRequest(null, null), "/Events/CacheRequest", 5000, 
 				HTTP.ConnectionInfo.createHTTPConnectionInfo(true));
+			Log.log(logger, "info", "Cache query elapsed time %d ms", (System.currentTimeMillis() - startTime) );
 			Log.log(logger, "info", "Received cache response: %s", resp@payload);
 			String[] tokens = String.split(resp@payload, ",");
 			if (tokens@length == 3) {

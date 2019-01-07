@@ -23,10 +23,11 @@ ENV EAR_FILE /opt/tibco/be/application/ear/Coverage.ear
 #Application's environment variables
 ENV Deployment Coverage
 ENV HTTP_PORT 8890
+ENV WAYPOINTS_TOPIC waypoints
 ENV Domain domain
 ENV MessageEncoding ISO8859-1
 ENV CACHE_URL https://es0r4xjoeb.execute-api.us-west-2.amazonaws.com/Prod/coveragedata/
-ENV KAFKA_URL ab4f847f5112c11e98b64028047d0b43-975457141.us-west-2.elb.amazonaws.com:9094
+ENV KAFKA_URL af9d687aa120311e9b3520a2b998cd74-1731976297.us-west-2.elb.amazonaws.com:9094
 
 #Exposing ports
 EXPOSE 8890 

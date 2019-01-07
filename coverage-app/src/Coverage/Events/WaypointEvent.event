@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event:SimpleEvent xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:event="http:///com/tibco/cep/designtime/core/model/event" namespace="/Events/" folder="/Events/" name="WaypointEvent" description="" GUID="4381133F-56C5-3AF8-4CE8-8C6ACB9F2B4D" ownerProjectName="Coverage" superEventPath="" ttlUnits="Seconds" channelURI="/Channels/Waypoints" destinationName="waypoints">
+  <expiryAction name="WaypointEvent_expiryAction" ownerProjectName="Coverage" actionText="" conditionText="">
+    <symbols>
+      <symbolList idName="waypointevent" type="/Events/WaypointEvent"/>
+    </symbols>
+  </expiryAction>
+</event:SimpleEvent>

@@ -1,0 +1,14 @@
+/**
+ * @description 
+ */
+virtual void rulefunction DecisionTable.disqualify {
+	attribute {
+		validity = ACTION;
+	}
+	scope {
+		Concepts.CoverageStatus cov;
+	}
+	body {
+		
+	}
+}

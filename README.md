@@ -57,7 +57,7 @@ This script creates a Redis cache cluster, as well as an S3 bucket for Lambda fu
 
 * Deploy TIBCO BE application to EKS
 
-- `./coverage-app/deploy.sh` - This is a container for a coverage service implemented in TIBCO BusinessEvents.  The image is already built and uploaded to AWS ECR, and so the script simply pulls the image from ECR and start the POD and LoadBalancer in the EKS cluster created in the previous step. If you have installed TIBCO BusinessEvents, you may use the scripts in this folder to build the docker image youself.
+- `./coverage-app/deploy.sh` - This is a container for a coverage service implemented in TIBCO BusinessEvents.  The image is already built and uploaded to AWS ECR, and so the script simply pulls the image from ECR and start the POD and LoadBalancer in the EKS cluster created in the previous step. If you have installed TIBCO BusinessEvents, you may use the scripts in this folder to build the docker image yourself.
 
 * Deploy Lambda functions
 

@@ -23,13 +23,23 @@
         </globalVariable>
         <globalVariable>
             <name>KAFKA_URL</name>
-            <value>ab4f847f5112c11e98b64028047d0b43-975457141.us-west-2.elb.amazonaws.com:9094</value>
+            <value>af9d687aa120311e9b3520a2b998cd74-1731976297.us-west-2.elb.amazonaws.com:9094</value>
             <type>String</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1546733227655</modTime>
+            <modTime>1546814638172</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>WAYPOINTS_TOPIC</name>
+            <value>waypoints</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1546809975555</modTime>
         </globalVariable>
     </globalVariables>
 </repository>

@@ -6,4 +6,6 @@
   <properties name="expireDate" ownerProjectName="Coverage" ownerPath="/Concepts/CoverageStatus"/>
   <properties name="inforce" ownerProjectName="Coverage" type="boolean" ownerPath="/Concepts/CoverageStatus"/>
   <properties name="reqUuid" ownerProjectName="Coverage" ownerPath="/Concepts/CoverageStatus"/>
+  <properties name="patient" ownerProjectName="Coverage" ownerPath="/Concepts/CoverageStatus"/>
+  <properties name="sessionStart" ownerProjectName="Coverage" type="long" ownerPath="/Concepts/CoverageStatus"/>
 </element:Concept>

@@ -129,8 +129,10 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}, err
 	}
 
-	// test Kafka
+	// Log request body to Kafka
 	publish("Eligibility Request [Orchestrator] "+request.Body, 1)
+	reqPubTime := time.Since(startTime)
+	currTime := time.Now()
 
 	inforce, err := checkOrgStatus(reqBody.Organization.Reference)
 	if err != nil {
@@ -142,6 +144,8 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 			Body: errorResponse("Orchestrator", "ORG_STATUS_ERROR", reqBody.ID),
 		}, err
 	}
+	orgStatusTime := time.Since(currTime)
+	currTime = time.Now()
 
 	if inforce {
 		resp, err := checkCoverage(request.Body)
@@ -156,14 +160,24 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}
 		inforce = resp.Inforce
 	}
-	log.Printf("Orchestrator elapsed time %s\n", time.Since(startTime))
+	coverageTime := time.Since(currTime)
+	currTime = time.Now()
+
+	// Log response body to Kafka
+	respBody := successResponse(&reqBody, inforce)
+	publish("Eligibility Response [Orchestrator] "+respBody, 1)
+	respPubTime := time.Since(currTime)
+
+	// Log elapsed time
+	log.Printf("Orchestrator elapsed time %s: reqPub %s orgStat %s coverage %s respPub %s\n",
+		time.Since(startTime), reqPubTime, orgStatusTime, coverageTime, respPubTime)
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Headers: map[string]string{
 			"Content-Type": "application/json",
 		},
-		Body: successResponse(&reqBody, inforce),
+		Body: respBody,
 	}, nil
 }
 

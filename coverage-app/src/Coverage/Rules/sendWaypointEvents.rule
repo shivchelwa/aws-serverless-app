@@ -1,0 +1,29 @@
+/**
+ * @description send coverage request and response to waypoint Kafka channel
+ * @author Playing-Branes.local
+ */
+rule Rules.sendWaypointEvents {
+	attribute {
+		priority = 10;
+		forwardChain = true;
+	}
+	declare {
+		Events.CoverageRequest evt;
+		Concepts.CoverageStatus cov;
+	}
+	when {
+		evt.uuid == cov.reqUuid;
+	}
+	then {
+		Object logger = Log.getLogger("sendWaypointEvents");
+		long startTime = System.currentTimeMillis();
+		Log.log(logger, "info", "Log coverage request in waypoints: %s", evt@payload);
+		Event.sendEvent( Events.WaypointEvent.WaypointEvent(null, evt@payload) );
+		String req = String.trim(evt@payload);
+		String insert = ", \"inforce\": " + cov.inforce + "}";
+		String resp = String.substring(req, 0, String.length(req)-1) + insert;
+		Log.log(logger, "info", "Log coverage response in waypoints: %s", resp);
+		Event.sendEvent( Events.WaypointEvent.WaypointEvent(null, resp) );
+		Log.log(logger, "info", "Send waypoint events elasted %s ms", (System.currentTimeMillis() - startTime) );
+	}
+}
