@@ -9,6 +9,15 @@ if [ $? -ne 0 ]; then
 fi
 
 cd ${SDIR}
+if [ -f ./src/Coverage/coverage.cdd ]; then
+  echo "copy coverage.cdd from src"
+  cp ./src/Coverage/coverage.cdd .
+fi
+
+if [ ! -f Coverage.ear ]; then
+  echo "build BE EAR file for coverage project"
+  ${BE_HOME}/studio/bin/studio-tools --propFile ${BE_HOME}/studio/bin/studio-tools.tra -core buildEar -o ./Coverage.ear -p ./src/Coverage
+fi
 
 # generate Dockerfile if does not already exist
 if [ ! -f Dockerfile ]; then
