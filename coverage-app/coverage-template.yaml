@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: coverage
 spec:
-  replicas: 1
+  replicas: 3
   strategy: {}
   selector:
     matchLabels:
@@ -21,10 +21,16 @@ spec:
         env:
         - name: PU
           value: default
+        - name: tra.tibco.env.CUSTOM_EXT_PREPEND_CP
+          value: /opt/tibco/be/ext
         - name: CACHE_URL
           value: {{CACHE_URL}}
         - name: KAFKA_URL
           value: {{KAFKA_URL}}
+        - name: AWS_REGION
+          value: {{AWS_REGION}}
+        - name: CACHE_LAMBDA_ARN
+          value: {{CACHE_LAMBDA_ARN}}
         ports:
         - containerPort: 8890
 ---

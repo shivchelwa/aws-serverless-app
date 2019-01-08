@@ -8,9 +8,11 @@ cd ${SDIR}
 
 source ${SDIR}/env.sh
 sed -e "s|{{IMAGE}}.*|${IMAGE}|" ./coverage-template.yaml > coverage.yaml
+sed -i -e "s|{{AWS_REGION}}.*|${AWS_REGION}|" ./coverage.yaml
 
 source ${ROOT}/coverage-reference-app/env.sh
 sed -i -e "s|{{CACHE_URL}}.*|${GATEWAY_URL}|" ./coverage.yaml
+sed -i -e "s|{{CACHE_LAMBDA_ARN}}.*|${FUNCTION_ARN}|" ./coverage.yaml
 
 source ${ROOT}/eks/setup/config/env.sh
 sed -i -e "s|{{KAFKA_URL}}.*|${EXTERNAL_BROKER_HOST}:${EXTERNAL_BROKER_PORT}|" ./coverage.yaml
@@ -18,11 +20,13 @@ sed -i -e "s|{{KAFKA_URL}}.*|${EXTERNAL_BROKER_HOST}:${EXTERNAL_BROKER_PORT}|" .
 # start coverage service
 kubectl apply -f ./coverage.yaml
 
-stat=$(kubectl get pods | grep coverage | awk '{print $3}')
-while [ ${stat} != "Running" ]; do
-  echo "Wait for coverage POD. Current state: ${stat} ..."
+pods=$(kubectl get pods | grep coverage | awk '{print $3}' | wc -l)
+running=$(kubectl get pods | grep coverage | grep Running | wc -l)
+while [ ${running} -ne ${pods} ]; do
+  echo "Wait for coverage POD. Currently running: ${running} of ${pods} ..."
   sleep 10
-  stat=$(kubectl get pods | grep coverage | awk '{print $3}')
+  pods=$(kubectl get pods | grep coverage | awk '{print $3}' | wc -l)
+  running=$(kubectl get pods | grep coverage | grep Running | wc -l)
 done
 
 # print LoadBalancer info

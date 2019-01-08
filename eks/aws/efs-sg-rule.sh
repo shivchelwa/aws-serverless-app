@@ -18,3 +18,7 @@ echo "set NFS rule for bastion sg ${bastionSgid} and node sg ${nodeSgid} in secu
 aws ec2 revoke-security-group-ingress --group-id ${mountSgid} --protocol tcp --port 2049 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id ${mountSgid} --protocol tcp --port 2049 --source-group ${bastionSgid}
 aws ec2 authorize-security-group-ingress --group-id ${mountSgid} --protocol tcp --port 2049 --source-group ${nodeSgid}
+
+# add lambda role to nodegroup role, so BE engines can invoke lambda functions directly
+noderole=$(aws cloudformation list-stack-resources --stack-name eksctl-${EKS_STACK}-nodegroup-0 --query 'StackResourceSummaries[?ResourceType==`AWS::IAM::Role`].PhysicalResourceId' --output text)
+aws iam attach-role-policy --role-name ${noderole} --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaRole

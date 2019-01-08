@@ -20,7 +20,19 @@ RUN rm /opt/tibco/be/application/Coverage.ear
 ENV CDD_FILE /opt/tibco/be/application/coverage.cdd
 ENV EAR_FILE /opt/tibco/be/application/ear/Coverage.ear
 
+#External Jars
+ADD httpcore-4.4.9.jar /opt/tibco/be/ext
+ADD httpclient-4.5.5.jar /opt/tibco/be/ext
+ADD jackson-core-2.6.7.jar /opt/tibco/be/ext
+ADD jackson-databind-2.6.7.2.jar /opt/tibco/be/ext
+ADD aws-java-sdk-core-1.11.478.jar /opt/tibco/be/ext
+ADD joda-time-2.8.1.jar /opt/tibco/be/ext
+ADD jackson-annotations-2.6.0.jar /opt/tibco/be/ext
+ADD aws-java-sdk-lambda-1.11.478.jar /opt/tibco/be/ext
+
 #Application's environment variables
+ENV AWS_REGION us-west-2
+ENV CACHE_LAMBDA_ARN arn:aws:lambda:us-west-2:742759186184:function:coverage-reference-app-CoveragedataFunction-SUM238IKHALO
 ENV Deployment Coverage
 ENV HTTP_PORT 8890
 ENV WAYPOINTS_TOPIC waypoints

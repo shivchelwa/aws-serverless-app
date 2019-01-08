@@ -33,7 +33,7 @@ func init() {
 	var err error
 	if producer, err = sarama.NewSyncProducer([]string{kafkaConn}, config); err != nil {
 		log.Printf("Error creating producer for Kafka %s: [%s]\n", kafkaConn, err)
-		panic(err)
+		//		panic(err)
 	} else {
 		log.Printf("Initialized producer for topic %s on Kafka %s\n", topic, kafkaConn)
 	}

@@ -19,6 +19,7 @@ rule Rules.checkEffectivePeriod {
 		Object logger = Log.getLogger("checkEffectivePeriod");
 		DateTime today = Date.today();
 		String dstr = DateTime.format(today, "yyyy-MM-dd");
+		Log.log(logger, "info", "Today's date is %s", dstr);
 		if (cov.effectiveDate > dstr) {
 			cov.inforce = false;
 			Log.log(logger, "info", "Coverage is not effective. Effective date is %s", cov.effectiveDate);

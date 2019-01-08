@@ -83,8 +83,8 @@ func checkCoverage(reqBody string) (*EligibilityResponse, error) {
 		return nil, err
 	}
 	if resp.StatusCode != 200 {
-		log.Printf("Coverage service returned status code: %s\n", resp.StatusCode)
-		return nil, fmt.Errorf("Coverage service returned non-200 code: %s", resp.StatusCode)
+		log.Printf("Coverage service returned status code: %d\n", resp.StatusCode)
+		return nil, fmt.Errorf("Coverage service returned non-200 code: %d", resp.StatusCode)
 	}
 	var respBody EligibilityResponse
 	if err := json.NewDecoder(resp.Body).Decode(&respBody); err != nil {

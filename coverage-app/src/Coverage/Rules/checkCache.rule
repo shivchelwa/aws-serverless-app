@@ -1,5 +1,6 @@
 /**
- * @description fetch effective dates of a coverage from cache
+ * @description fetch effective dates of a coverage from cache by calling REST API. 
+ *   This is not used. For better performance, it has been replaced by direct Lambda function call.
  * @author Playing-Branes.local
  */
 rule Rules.checkCache {
@@ -12,6 +13,7 @@ rule Rules.checkCache {
 		Concepts.CoverageStatus cov;
 	}
 	when {
+		false;
 		evt.uuid == cov.reqUuid;
 		cov.effectiveDate == "";
 	}

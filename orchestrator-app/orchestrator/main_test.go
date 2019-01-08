@@ -4,61 +4,41 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
-
-	"github.com/aws/aws-lambda-go/events"
 )
 
-func TestHandler(t *testing.T) {
-	t.Run("Unable to get IP", func(t *testing.T) {
-		DefaultHTTPGetAddress = "http://127.0.0.1:12345"
-
-		_, err := handler(events.APIGatewayProxyRequest{})
-		if err == nil {
-			t.Fatal("Error failed to trigger with an invalid request")
-		}
-	})
-
+func TestCheckCoverage(t *testing.T) {
 	t.Run("Non 200 Response", func(t *testing.T) {
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(500)
 		}))
 		defer ts.Close()
 
-		DefaultHTTPGetAddress = ts.URL
+		os.Setenv("COVERAGE_URL", ts.URL)
 
-		_, err := handler(events.APIGatewayProxyRequest{})
-		if err != nil && err.Error() != ErrNon200Response.Error() {
-			t.Fatalf("Error failed to trigger with an invalid HTTP response: %v", err)
-		}
-	})
-
-	t.Run("Unable decode IP", func(t *testing.T) {
-		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(500)
-		}))
-		defer ts.Close()
-
-		DefaultHTTPGetAddress = ts.URL
-
-		_, err := handler(events.APIGatewayProxyRequest{})
+		_, err := checkCoverage("{}")
 		if err == nil {
-			t.Fatal("Error failed to trigger with an invalid HTTP response")
+			t.Fatalf("checkCoverage should return error if response status code is not 200")
 		}
 	})
 
 	t.Run("Successful Request", func(t *testing.T) {
 		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(200)
-			fmt.Fprintf(w, "127.0.0.1")
+			fmt.Fprintf(w, "{\"inforce\": true}")
 		}))
 		defer ts.Close()
 
-		DefaultHTTPGetAddress = ts.URL
+		os.Setenv("COVERAGE_URL", ts.URL)
 
-		_, err := handler(events.APIGatewayProxyRequest{})
+		result, err := checkCoverage("{}")
 		if err != nil {
 			t.Fatal("Everything should be ok")
 		}
+		if !result.Inforce {
+			t.Fatal("Inforce should be true")
+		}
 	})
+
 }

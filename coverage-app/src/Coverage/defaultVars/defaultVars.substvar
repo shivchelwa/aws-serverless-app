@@ -2,16 +2,6 @@
 <repository xmlns="http://www.tibco.com/xmlns/repo/types/2002">
     <globalVariables>
         <globalVariable>
-            <name>HTTP_PORT</name>
-            <value>8890</value>
-            <type>Integer</type>
-            <deploymentSettable>true</deploymentSettable>
-            <serviceSettable>false</serviceSettable>
-            <description/>
-            <constraint/>
-            <modTime>1546704306515</modTime>
-        </globalVariable>
-        <globalVariable>
             <name>CACHE_URL</name>
             <value>https://es0r4xjoeb.execute-api.us-west-2.amazonaws.com/Prod/coveragedata/</value>
             <type>String</type>
@@ -20,6 +10,16 @@
             <description/>
             <constraint/>
             <modTime>1546728085382</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>HTTP_PORT</name>
+            <value>8890</value>
+            <type>Integer</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1546704306515</modTime>
         </globalVariable>
         <globalVariable>
             <name>KAFKA_URL</name>
@@ -40,6 +40,26 @@
             <description/>
             <constraint/>
             <modTime>1546809975555</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>CACHE_LAMBDA_ARN</name>
+            <value>arn:aws:lambda:us-west-2:742759186184:function:coverage-reference-app-CoveragedataFunction-SUM238IKHALO</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1546923152473</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>AWS_REGION</name>
+            <value>us-west-2</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1546923186239</modTime>
         </globalVariable>
     </globalVariables>
 </repository>

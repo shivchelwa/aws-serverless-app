@@ -3,5 +3,7 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="BE_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="src" path="JavaSrc"/>
+	<classpathentry kind="lib" path="/Users/yxu/work/chc/coverage-app/build/aws-java-sdk-core-1.11.478.jar"/>
+	<classpathentry kind="lib" path="/Users/yxu/work/chc/coverage-app/build/aws-java-sdk-lambda-1.11.478.jar"/>
 	<classpathentry kind="output" path="JavaBin"/>
 </classpath>

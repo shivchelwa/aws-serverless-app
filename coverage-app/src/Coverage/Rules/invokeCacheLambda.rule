@@ -1,0 +1,55 @@
+/**
+ * @description fetch effective dates of a coverage from cache by invoking lambda function
+ * @author Playing-Branes.local
+ */
+rule Rules.invokeCacheLambda {
+	attribute {
+		priority = 5;
+		forwardChain = true;
+	}
+	declare {
+		Events.CoverageRequest evt;
+		Concepts.CoverageStatus cov;
+	}
+	when {
+		evt.uuid == cov.reqUuid;
+		cov.effectiveDate == "";
+	}
+	then {
+		Object logger = Log.getLogger("invokeCacheLambda");
+		
+		// may move this to engine startup
+		String region = System.getGlobalVariableAsString("AWS_REGION", "us-west-2");
+		Object client = Lambda.client(region);
+		
+		// call lambda function
+		String arn = System.getGlobalVariableAsString("CACHE_LAMBDA_ARN", "");
+		String req = "{\"httpMethod\": \"GET\", \"queryStringParameters\": {\"key\": \"" + cov.reference + "\"} }";
+		Log.log(logger, "info", "Call lambda function %s with payload:\n  %s", arn, req);
+		try {
+			long startTime = System.currentTimeMillis();
+			String resp = Lambda.invoke(client, arn, req);
+			Log.log(logger, "info", "Cache query elapsed time %d ms", (System.currentTimeMillis() - startTime) );
+			Log.log(logger, "info", "Received cache response: %s", resp);
+			
+			// parse response message
+			Object root = JSON.parseJSON( resp );
+			String code = JSON.getTextValue( JSON.findValueNode( root, "statusCode" ) );
+			String payload = JSON.getTextValue( JSON.findValueNode( root, "body" ) );
+			Log.log(logger, "info", "Cache lambda returned status: %s; payload %s", code, payload);
+			
+			String[] tokens = String.split(payload, ",");
+			if (tokens@length == 3) {
+				cov.effectiveDate = tokens[1];
+				cov.expireDate = tokens[2];
+				Log.log(logger, "info", "Set coverage effective period [%s, %s]", cov.effectiveDate, cov.expireDate);
+			} else {
+				Log.log(logger, "info", "Invalid cache value for key %s: %s", cov.reference, payload);
+				cov.inforce = false;
+			}
+		} catch (Exception e) {
+			Log.logException(logger, "error", "Failed to check cache", e);
+			cov.inforce = false;
+		}
+	}
+}
