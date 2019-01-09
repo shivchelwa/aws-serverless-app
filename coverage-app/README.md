@@ -2,7 +2,7 @@
 
 This is a TIBCO BusinessEvents project to demostrate the deployment on Kubernetes. It implements coverage rules in either BE rules, or BE decision tables.  Decision table contains easy-to-edit rules in tabular format, and they can be hot-deployed at runtime.  
 
-It also demonstrates the integration with Redis cache via either direct invocation of AWS lambda functions, or via REST API through the AWS API gateway. The direct lambda call is faster because it avoids the round-trip delay to the API gateway, which could save 100 ms or more.  To enable the direct lambda invocation, we have to configure the service role of the EKS cluster, which has been done in the script `eks/aws/efe-sg-rule.sh`.
+It also demonstrates the integration with Redis cache via either direct invocation of AWS lambda functions, or via REST API through the AWS API gateway. The direct lambda call is faster because it avoids the round-trip delay to the API gateway, which could save 100 ms or more.  To enable the direct lambda invocation, we have to configure the service role of the EKS cluster, which has been done in the script `eks/aws/efs-sg-rule.sh`.
 
 The coverage service instances are deployed in muliple PODs, and the service is exposed by a LoadBalancer service.  Thus, the coverage service can be auto scaled as described in [kuberneties.io](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/).
 

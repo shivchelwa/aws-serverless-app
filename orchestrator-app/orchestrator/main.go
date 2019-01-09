@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -129,48 +130,77 @@ func handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		}, err
 	}
 
+	// initialize inforce
+	var err error
+	inforce := true
+	c := make(chan string, 3)
+
 	// Log request body to Kafka
-	publish("Eligibility Request [Orchestrator] "+request.Body, 1)
-	reqPubTime := time.Since(startTime)
-	currTime := time.Now()
+	go func() {
+		currTime := time.Now()
+		publish("Eligibility Request [Orchestrator] "+request.Body, 1)
+		reqPubTime := time.Since(currTime)
+		c <- fmt.Sprintf(" reqPub %s", reqPubTime)
+	}()
 
-	inforce, err := checkOrgStatus(reqBody.Organization.Reference)
-	if err != nil {
-		return events.APIGatewayProxyResponse{
-			StatusCode: 500,
-			Headers: map[string]string{
-				"Content-Type": "application/json",
-			},
-			Body: errorResponse("Orchestrator", "ORG_STATUS_ERROR", reqBody.ID),
-		}, err
-	}
-	orgStatusTime := time.Since(currTime)
-	currTime = time.Now()
+	go func() {
+		currTime := time.Now()
+		ok, e := checkOrgStatus(reqBody.Organization.Reference)
+		if e != nil {
+			err = e
+			inforce = false
+		} else if inforce {
+			inforce = ok
+		}
+		orgStatusTime := time.Since(currTime)
+		c <- fmt.Sprintf(" orgStatus %s", orgStatusTime)
+	}()
 
-	if inforce {
-		resp, err := checkCoverage(request.Body)
+	go func() {
+		currTime := time.Now()
+		resp, e := checkCoverage(request.Body)
+		if e != nil {
+			err = e
+			inforce = false
+		} else if inforce {
+			inforce = resp.Inforce
+		}
+		coverageTime := time.Since(currTime)
+		c <- fmt.Sprintf(" coverage %s", coverageTime)
+
+	}()
+
+	// wait for 3 tasks to complete
+	var buffer bytes.Buffer
+	for i := 0; i < 3; i++ {
+		msg := <-c
+		buffer.WriteString(msg)
 		if err != nil {
+			errCode := "KAFKA_ERROR"
+			if strings.HasPrefix(msg, "orgStatus") {
+				errCode = "ORG_STATUS_ERROR"
+			} else if strings.HasPrefix(msg, "coverage") {
+				errCode = "COVERAGE_ERROR"
+			}
 			return events.APIGatewayProxyResponse{
 				StatusCode: 500,
 				Headers: map[string]string{
 					"Content-Type": "application/json",
 				},
-				Body: errorResponse("Orchestrator", "COVERAGE_ERROR", reqBody.ID),
+				Body: errorResponse("Orchestrator", errCode, reqBody.ID),
 			}, err
 		}
-		inforce = resp.Inforce
 	}
-	coverageTime := time.Since(currTime)
-	currTime = time.Now()
 
 	// Log response body to Kafka
 	respBody := successResponse(&reqBody, inforce)
+	currTime := time.Now()
 	publish("Eligibility Response [Orchestrator] "+respBody, 1)
 	respPubTime := time.Since(currTime)
 
 	// Log elapsed time
-	log.Printf("Orchestrator elapsed time %s: reqPub %s orgStat %s coverage %s respPub %s\n",
-		time.Since(startTime), reqPubTime, orgStatusTime, coverageTime, respPubTime)
+	log.Printf("Orchestrator elapsed time %s: %s respPub %s\n",
+		time.Since(startTime), buffer.String(), respPubTime)
 
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
