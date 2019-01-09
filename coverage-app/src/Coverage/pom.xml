@@ -41,15 +41,15 @@
 					<dockerRegistryConfig>
 						<property>
 							<key>Repository</key>
-							<value />
+							<value>coverage-app</value>
 						</property>
 						<property>
-							<key>Url</key>
-							<value />
+							<name>Url</name>
+							<value>233043593649.dkr.ecr.us-east-1.amazonaws.com</value>
 						</property>
 						<property>
 							<key>TagImage</key>
-							<value />
+							<value>coverage:latest</value>
 						</property>
 					</dockerRegistryConfig>
 					<baseImageConfig>
