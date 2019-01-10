@@ -41,15 +41,15 @@
 					<dockerRegistryConfig>
 						<property>
 							<name>Repository</name>
-							<value>coverage-app</value>
+							<value>shivchelwa/coverage-app</value>
 						</property>
 						<property>
 							<name>Url</name>
-							<value>233043593649.dkr.ecr.us-east-1.amazonaws.com</value>
+							<value>index.docker.io</value>
 						</property>
 						<property>
 							<name>TagImage</name>
-							<value>coverage-app:latest</value>
+							<value>shivchelwa/coverage-app:latest</value>
 						</property>
 					</dockerRegistryConfig>
 					<baseImageConfig>
