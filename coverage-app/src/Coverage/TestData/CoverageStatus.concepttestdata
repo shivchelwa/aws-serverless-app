@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testdata name="CoverageStatus" folder="TestData" project="Coverage" entityPath="/Concepts/CoverageStatus" type="Concept"><ns0:CoverageStatus xmlns:ns0="www.tibco.com/be/ontology/Concepts/CoverageStatus" isSelected="true"><reference>C-000005</reference><effectiveDate/><expireDate/><inforce>false</inforce><reqUuid>TEST1001</reqUuid><patient>deceased</patient><sessionStart/></ns0:CoverageStatus></testdata>

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testdata name="CoverageRequest" folder="TestData" project="Coverage" entityPath="/Events/CoverageRequest" type="SimpleEvent"><ns0:CoverageRequest xmlns:ns0="www.tibco.com/be/ontology/Events/CoverageRequest" isSelected="true"><uuid>TEST1001</uuid></ns0:CoverageRequest></testdata>
