@@ -32,8 +32,8 @@
 						<cddFileLocation>coverage.cdd</cddFileLocation>
 						<targetDir>docker</targetDir>
 						<baseBEImage>5.5.0-v01</baseBEImage>
-						<maintainer>yxuco</maintainer>
-						<email>yxuco@yxuco.com</email>
+						<maintainer>schelwa</maintainer>
+						<email>schelwa@tibco.com</email>
 						<labels>ApplicationName=coverage</labels>
 						<appImage>coverage:latest</appImage>
 						<overwriteDockerfile>true</overwriteDockerfile>
@@ -45,7 +45,7 @@
 						</property>
 						<property>
 							<name>Url</name>
-							<value>index.docker.io</value>
+							<value>docker.io</value>
 						</property>
 						<property>
 							<name>TagImage</name>
