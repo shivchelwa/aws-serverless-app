@@ -66,15 +66,14 @@ public class BEUnitTestSuite {
 	public void testRuleOrder() throws Exception {
 		engine.resetSession(); // (optional) reset the rule session, which will clear working memory, restart timers, and clear the data from any previous tests
 
-		// TODO : Change test data path here to create concepts to be asserted from a test data file
-		//List<Concept> concepts = helper.createConceptsFromTestData("/TestData/<test data file name>");
-		//engine.assertConcepts(concepts, false);
 		assertTestData();
 		
 		engine.executeRules();
+		
 		List<String> rules = new ArrayList<String>();
-		rules.add("/Rules/sendResponse"); // TODO : Change the name to the first expected rule
-		rules.add("/Rules/sendWaypointEvents"); // TODO : Change the name to a rule expected to fire after the previous rule
+		rules.add("/Rules/sendResponse"); 
+		rules.add("/Rules/sendWaypointEvents"); 
+		
 		expecter.expectOrdered(rules, ExpectationType.RULE_EXECTION);
 	}
 	
@@ -85,13 +84,10 @@ public class BEUnitTestSuite {
 	public void testConceptUnmodified() throws Exception {
 		engine.resetSession(); // (optional) reset the rule session, which will clear working memory, restart timers, and clear the data from any previous tests
 
-		// TODO : Change test data path here to create concepts to be asserted from a test data file
-		//List<Concept> concepts = helper.createConceptsFromTestData("/TestData/<test data file name>");
-		//engine.assertConcepts(concepts, false);
 		assertTestData();
 		
 		engine.executeRules();
-		// TODO : Change the concept name to test whether the concept was modified during rule processing
+
 		expecter.expectUnmodified("/Concepts/CoverageStatus");
 	}
 	
@@ -102,13 +98,10 @@ public class BEUnitTestSuite {
 	public void testWorkingMemory() throws Exception {
 		engine.resetSession(); // (optional) reset the rule session, which will clear working memory, restart timers, and clear the data from any previous tests
 
-		// TODO : Change test data path here to create concepts to be asserted from a test data file
-		//List<Concept> concepts = helper.createConceptsFromTestData("/TestData/<test data file name>");
-		//engine.assertConcepts(concepts, false);
 		assertTestData();
 		
 		engine.executeRules();
-		// TODO : Change the concept name to test whether the concept was modified during rule processing
+		
 		expecter.expectInWorkingMemory("/Concepts/CoverageStatus");
 	}
 	
@@ -119,12 +112,11 @@ public class BEUnitTestSuite {
 	public void testRuleFired() throws Exception {
 		engine.resetSession(); // (optional) reset the rule session, which will clear working memory, restart timers, and clear the data from any previous tests
 
-		// TODO : Change test data path here to create concepts to be asserted from a test data file
-		//List<Concept> concepts = helper.createConceptsFromTestData("/TestData/<test data file name>");
-		//engine.assertConcepts(concepts, false);
 		assertTestData();
+		
 		engine.executeRules();
-		expecter.expectRuleFired("/Rules/checkDisqualified"); // TODO : Change the name to a rule expected to fire
+		
+		expecter.expectRuleFired("/Rules/checkDisqualified"); 
 	}	
 	
 	private void assertTestData() throws Exception, DuplicateExtIdException {

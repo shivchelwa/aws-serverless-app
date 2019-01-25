@@ -2,6 +2,26 @@
 <repository xmlns="http://www.tibco.com/xmlns/repo/types/2002">
     <globalVariables>
         <globalVariable>
+            <name>AWS_REGION</name>
+            <value>us-west-2</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1546923186239</modTime>
+        </globalVariable>
+        <globalVariable>
+            <name>CACHE_LAMBDA_ARN</name>
+            <value>arn:aws:lambda:us-west-2:742759186184:function:coverage-reference-app-CoveragedataFunction-SUM238IKHALO</value>
+            <type>String</type>
+            <deploymentSettable>true</deploymentSettable>
+            <serviceSettable>false</serviceSettable>
+            <description/>
+            <constraint/>
+            <modTime>1546923152473</modTime>
+        </globalVariable>
+        <globalVariable>
             <name>CACHE_URL</name>
             <value>https://es0r4xjoeb.execute-api.us-west-2.amazonaws.com/Prod/coveragedata/</value>
             <type>String</type>
@@ -23,13 +43,13 @@
         </globalVariable>
         <globalVariable>
             <name>KAFKA_URL</name>
-            <value>af9d687aa120311e9b3520a2b998cd74-1731976297.us-west-2.elb.amazonaws.com:9094</value>
+            <value>localhost:9092</value>
             <type>String</type>
             <deploymentSettable>true</deploymentSettable>
             <serviceSettable>false</serviceSettable>
             <description/>
             <constraint/>
-            <modTime>1546814638172</modTime>
+            <modTime>1547242983308</modTime>
         </globalVariable>
         <globalVariable>
             <name>WAYPOINTS_TOPIC</name>
@@ -40,26 +60,6 @@
             <description/>
             <constraint/>
             <modTime>1546809975555</modTime>
-        </globalVariable>
-        <globalVariable>
-            <name>CACHE_LAMBDA_ARN</name>
-            <value>arn:aws:lambda:us-west-2:742759186184:function:coverage-reference-app-CoveragedataFunction-SUM238IKHALO</value>
-            <type>String</type>
-            <deploymentSettable>true</deploymentSettable>
-            <serviceSettable>false</serviceSettable>
-            <description/>
-            <constraint/>
-            <modTime>1546923152473</modTime>
-        </globalVariable>
-        <globalVariable>
-            <name>AWS_REGION</name>
-            <value>us-west-2</value>
-            <type>String</type>
-            <deploymentSettable>true</deploymentSettable>
-            <serviceSettable>false</serviceSettable>
-            <description/>
-            <constraint/>
-            <modTime>1546923186239</modTime>
         </globalVariable>
     </globalVariables>
 </repository>

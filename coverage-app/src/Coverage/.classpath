@@ -3,7 +3,10 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="BE_CLASSPATH_CONTAINER"/>
 	<classpathentry kind="src" path="JavaSrc"/>
-	<classpathentry kind="lib" path="/Users/yxu/work/chc/coverage-app/build/aws-java-sdk-core-1.11.478.jar"/>
-	<classpathentry kind="lib" path="/Users/yxu/work/chc/coverage-app/build/aws-java-sdk-lambda-1.11.478.jar"/>
+	<classpathentry kind="con" path="TIB_EXT_CLASSPATH_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/shivkumarchelwa/workspace/customers/chc/aws-serverless-app/coverage-app/build/aws-java-sdk-core-1.11.478.jar"/>
+	<classpathentry kind="lib" path="/Users/shivkumarchelwa/workspace/customers/chc/aws-serverless-app/coverage-app/build/aws-java-sdk-lambda-1.11.478.jar"/>
+	<classpathentry kind="lib" path="/Users/shivkumarchelwa/Applications/BE5.5/be/5.5/eclipse-platform/eclipse/Eclipse.app/Contents/Eclipse/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="JavaBin"/>
 </classpath>
